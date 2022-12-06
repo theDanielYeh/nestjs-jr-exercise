@@ -3,6 +3,7 @@
 This project is set up with [NestJS](https://nestjs.com), which will be the primary back-end framework you will be working with.
 
 Your abilities will be tested in the following:
+
 - Typescript
 - NodeJS
 - MongoDB
@@ -73,25 +74,35 @@ npm install
 
 Download and install the community edition of MongoDB from https://www.mongodb.com/docs/manual/installation/.
 
+After installing, you'll want to start the service.
+
 Next, download and install [Studio 3T](https://robomongo.org). This is a GUI for connecting to your Mongo database, and will allow you to query your database for easier debugging and troubleshooting.
 
 ### Create "users" collection
 
 ### Generate new "Users API"
 
+I've set up a [User Controller](./src/modules/user/user.controller.ts) already.
+
+The methods are stubbed, and you will need to fill in the logic.
+
 ### Seed Test Users
 
-Seed test data from [users.csv](./seed-data/users.csv) using for loop and CRUD methods
+Seed test data from [users.csv](./seed-data/users.csv) using for loop and CRUD methods.
+
+Create a new seed method in your user service, and then add a POST method for executing this method.
 
 ### Search Endpoint
 
 Add a new HTTP POST method "search" endpoint
-   1. Given a "username", this endpoint should return the users email if found
-   2. If NOT found, a 404 HTTP Exception should be thrown
+
+1.  Given a "username", this endpoint should return the users email if found
+2.  If NOT found, a 404 HTTP Exception should be thrown
 
 ### Validation
 
 Add class validators for all properties
 
 ## Resources
+
 1. https://docs.nestjs.com
