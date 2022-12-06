@@ -154,6 +154,8 @@ ie. Invalid email should NOT be saved when creating a user
 
 In NestJs, this is typically set up using **class validators** in DTO objects (Data Transfer Objects). I've set up a basic example to prevent empty data and non-strings from being entered. See [create-user.dto.ts](./src/modules/user/dto/create-user.dto.ts).
 
+![Bad Request Example](./img/bad-request-example.png)
+
 Your task is to add a new user field named "email".
 
 This field will need to enforce valid emails when creating new users and updating existing users.
