@@ -11,11 +11,12 @@ export class UserService {
   constructor(@InjectModel(User.name, MONGO_DB_NAME) private userModel: Model<UserDoc>) {}
 
   async createUser(user: Partial<User>): Promise<User> {
-    return null;
+    const newUser = new this.userModel(user);
+    return await newUser.save();
   }
 
-  async deleteUser(_id: string): Promise<unknown> {
-    return null;
+  async deleteUser(_id: string): Promise<User> {
+    return await this.userModel.findOneAndDelete({ _id });
   }
 
   async findByObjectId(_id: string): Promise<User> {

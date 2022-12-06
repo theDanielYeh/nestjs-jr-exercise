@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   NotFoundException,
   Param,
   Patch,
@@ -18,6 +19,8 @@ import { UserService } from './user.service';
 @ApiTags('User API')
 @Controller('user')
 export class UserController {
+  private logger = new Logger(UserController.name);
+
   constructor(private readonly userService: UserService) {}
 
   @Post('/create')
@@ -37,15 +40,20 @@ export class UserController {
 
   @Delete('/:_id')
   @ApiOperation({ summary: 'Delete a user ' })
-  async deleteById(@Param('_id') _id: string): Promise<unknown> {
-    return await this.userService.deleteUser(_id);
+  async deleteById(@Param('_id') _id: string): Promise<UserDto> {
+    try {
+      return await this.userService.deleteUser(_id);
+    } catch (e) {
+      this.logger.error(e.message);
+      throw new NotFoundException(`User id '${_id}' not found.`);
+    }
   }
 
   @Get('/username/:username')
   @ApiOperation({ summary: 'Find user by username' })
   @ApiOkResponse({ type: UserDto })
   @ApiNotFoundResponse()
-  async getByUsername(@Param('username') username: string): Promise<unknown> {
+  async getByUsername(@Param('username') username: string): Promise<UserDto> {
     return await this.userService.findByUserName(username);
   }
 
@@ -57,7 +65,7 @@ export class UserController {
     const user = await this.userService.findByObjectId(_id);
 
     if (!user) {
-      throw new NotFoundException(`User id ${_id} not found.`);
+      throw new NotFoundException(`User id '${_id}' not found.`);
     }
 
     return user;
