@@ -97,6 +97,8 @@ nest start --watch
 
 This will start the project in **watch** mode at http://localhost:9001/docs#/, so any file changes will immediately take effect in the browser.
 
+![Swagger API Screenshot](./img/swagger-api.png)
+
 ### Create "users" collection
 
 The users collection should automatically already be created on app start.
