@@ -10,7 +10,7 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Sold.com | Jr. BE API Test')
-    .setDescription('Testing your API abilities')
+    .setDescription("Testing Daniel's API abilities")
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

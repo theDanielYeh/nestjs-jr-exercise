@@ -12,6 +12,7 @@ import {
 import { ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CsvParser } from 'src/providers/csv-parser.provider';
 import { CreateUserDto } from './dto/create-user.dto';
+import { SearchUserDto } from './dto/search-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
@@ -30,6 +31,7 @@ export class UserController {
     return await this.userService.createUser(body);
   }
 
+  // to do in user.service.ts
   @Patch('/update/:_id')
   @ApiOperation({ summary: 'Partially update a user' })
   @ApiOkResponse({ type: UserDto })
@@ -49,6 +51,7 @@ export class UserController {
     }
   }
 
+  // to do in user.service.ts
   @Get('/username/:username')
   @ApiOperation({ summary: 'Find user by username' })
   @ApiOkResponse({ type: UserDto })
@@ -71,17 +74,35 @@ export class UserController {
     return user;
   }
 
+  // to do here & in service.ts for POST /user/search
+  @Post('/search')
+  @ApiOperation({ summary: 'Search a user by first name, last name, and/or username' })
+  @ApiOkResponse({ type: UserDto })
+  @ApiNotFoundResponse()
+  async searchUser(@Body() body: SearchUserDto): Promise<UserDto> {
+    const user = await this.userService.searchUser(body);
+
+    if (!user) {
+      throw new NotFoundException(`User with query '${JSON.stringify(body)}' not found.`);
+    }
+
+    return user;
+  }
+
   @Post('/seed-data')
   @ApiOperation({ summary: 'Load data from ./seed-data/users.csv into our mongo database' })
   async seedData(): Promise<boolean> {
     const users = await CsvParser.parse('seed-data/users.csv');
-    let results = false;
+    let results = true;
 
-    /**
-     *
-     * @todo
-     * Loop through all the users and save into the database
-     */
+    for (const user of users) {
+      try {
+        await this.userService.createUser(user);
+      } catch (e) {
+        this.logger.error(`Failed to create user ${user.username}: ${e.message}`);
+        results = false;
+      }
+    }
 
     return results;
   }
